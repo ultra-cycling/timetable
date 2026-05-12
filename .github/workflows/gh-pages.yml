@@ -16,6 +16,10 @@ jobs:
       matrix:
         node-version: [14.x] # We will deploy with only one version of node
 
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,10 +33,10 @@ jobs:
           npm ci
           CI=false npm run build --if-present
           npm test
-      - name: deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: upload artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          # see https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-create-ssh-deploy-key
-          # make sure to create a "REPOSITORY SECRET" in https://github.com/ultra-cycling/timetable/settings/secrets/actions/new
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./build
+          path: ./build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
