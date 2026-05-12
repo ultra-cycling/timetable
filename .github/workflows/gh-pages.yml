@@ -17,7 +17,8 @@ jobs:
         node-version: [14.x] # We will deploy with only one version of node
 
     permissions:
-      pages: write      # to deploy to Pages
+      contents: write
+      pages: write
       id-token: write
 
     # Steps represent a sequence of tasks that will be executed as part of the job
